@@ -1,0 +1,39 @@
+version: "3.7"
+secrets:
+    portainer_admin_password:
+        file: ${PORTAINER_ADMIN_SECRET}
+services:
+    proxy-manager:
+        image: "jc21/nginx-proxy-manager:latest"
+        container_name: proxy-manager
+        restart: unless-stopped
+        healthcheck:
+            test: ["CMD", "/bin/check-health"]
+            interval: 10s
+            timeout: 3s
+        ports:
+            - "80:80"
+            - "81:81"
+            - "443:443"
+        volumes:
+            - ./proxy-manager/letsencrypt:/etc/letsencrypt
+            - ./proxy-manager/data:/data
+    portainer:
+        image: portainer/portainer-ce:latest
+        container_name: portainer
+        command: --admin-password-file '/run/secrets/portainer_admin_password'
+        restart: unless-stopped
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./portainer/data:/data
+        secrets:
+            - portainer_admin_password
+        deploy:
+            mode: replicated
+            replicas: 1
+            placement:
+                constraints: [node.role == manager]
+networks:
+    default:
+        external:
+            name: gateway

@@ -1,0 +1,4 @@
+proxy-manager/
+portainer/
+secrets/
+*.env
