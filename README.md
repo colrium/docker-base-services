@@ -13,6 +13,50 @@ To manage sensitive information, you can use the `secrets` directory. Below are 
 
 2. **Accessing Secrets**: Ensure that your application can access these files securely. You may need to configure your Docker containers to mount the `secrets` directory.
 
+### Generating Secure Passwords
+
+You can generate secure, random passwords using the following terminal commands:
+
+#### Using OpenSSL (Linux/macOS/Windows with OpenSSL installed)
+
+```bash
+# Generate a 32-character random password
+openssl rand -base64 32
+
+# Generate a 24-character random password
+openssl rand -base64 24
+```
+
+#### Using mkpasswd (Linux/macOS)
+
+```bash
+# Generate a hashed password (useful for system passwords)
+mkpasswd -m sha-512
+
+# Or generate a simple random password
+tr -dc 'A-Za-z0-9!@#$%^&*' < /dev/urandom | head -c 32 ; echo
+```
+
+#### Using PowerShell (Windows)
+
+```powershell
+# Generate a 32-character random password
+$password = ([char[]]([char]33..[char]126) | Sort-Object {Get-Random}) -join '' | Select-Object -First 32; Write-Host $password
+```
+
+#### Using cmd.exe (Windows) with certutil
+
+```cmd
+# Generate a base64-encoded random string
+certutil -encodehex -f C:\Windows\System32\drivers\etc\hosts - | find /v ":" | head -c 32
+```
+
+#### Quick one-liner for Python (if installed)
+
+```python
+python -c "import secrets; print(secrets.token_urlsafe(32))"
+```
+
 ### Sample Secret Files
 
 - **n8n_user.txt**
