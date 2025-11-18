@@ -1,9 +1,6 @@
-proxy-manager/
-portainer/
-secrets/
-# n8n/config/
-# n8n/*.sqlite
-# n8n/*.log
-# n8n/nodes
-n8n/
+
+!proxy-manager/docker-compose.yml
+!portainer/docker-compose.yml
+!postgres/docker-compose.yml
+*/secrets/
 *.env

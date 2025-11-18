@@ -10,6 +10,9 @@ To manage sensitive information, you can use the `secrets` directory. Below are 
    - `n8n_user.txt`: Contains the username for n8n.
    - `n8n_password.txt`: Contains the password for n8n.
    - `portainer_admin_password.txt`: Contains the admin password for Portainer.
+   - `postgres_user.txt`: Contains the username for PostgreSQL database.
+   - `postgres_password.txt`: Contains the password for PostgreSQL database.
+   - `postgres_db.txt`: Contains the default database name for PostgreSQL.
 
 2. **Accessing Secrets**: Ensure that your application can access these files securely. You may need to configure your Docker containers to mount the `secrets` directory.
 
@@ -25,6 +28,9 @@ openssl rand -base64 32
 
 # Generate a 24-character random password
 openssl rand -base64 24
+
+# Generate a 16-character random password
+openssl rand -base64 16
 ```
 
 #### Using mkpasswd (Linux/macOS)
@@ -38,9 +44,8 @@ tr -dc 'A-Za-z0-9!@#$%^&*' < /dev/urandom | head -c 32 ; echo
 ```
 
 #### Using PowerShell (Windows)
-
+Generate a 32-character random password
 ```powershell
-# Generate a 32-character random password
 $password = ([char[]]([char]33..[char]126) | Sort-Object {Get-Random}) -join '' | Select-Object -First 32; Write-Host $password
 ```
 
@@ -75,6 +80,24 @@ python -c "import secrets; print(secrets.token_urlsafe(32))"
 
   ```
   your_portainer_admin_password
+  ```
+
+- **postgres_user.txt**
+
+  ```
+  postgres
+  ```
+
+- **postgres_password.txt**
+
+  ```
+  your_postgres_password
+  ```
+
+- **postgres_db.txt**
+
+  ```
+  postgres
   ```
 
 Make sure to replace the placeholders with your actual sensitive information.
